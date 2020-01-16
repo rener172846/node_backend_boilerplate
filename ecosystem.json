@@ -1,0 +1,9 @@
+{
+  "apps" : [{
+    "name"      : "Node-BE",
+    "script"    : "./build/index.js",
+    "env": {
+      "ENVIRONMENT": "production"
+    }
+  }]
+}

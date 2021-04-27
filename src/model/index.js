@@ -55,8 +55,13 @@ Sequelize.Model.upsert = function (values, options) {
 
 const models = {};
 models.Activation = activation(sequelize, Sequelize)
-models.User = generateRedisModel(user(sequelize, Sequelize))
+models.User = user(sequelize, Sequelize)
 models.UserLogin = userLogin(sequelize, Sequelize)
+
+if (config.use_redis) {
+  // define cached models
+  models.User = generateRedisModel(models.User);
+}
 
 // Forign keys
 models.User.hasMany(models.Activation, { as: 'activation', foreignKey: 'user_id' })

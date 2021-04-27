@@ -16,6 +16,8 @@ export default {
   db_user: process.env.DB_USER,
   db_pass: process.env.DB_PASS,
   db_dialect: process.env.DB_DIALECT,
+
+  use_redis: process.env.USE_REDIS == 'true',
   
   redis_host: process.env.REDIS_HOST,
   redis_port: process.env.REDIS_PORT,
@@ -23,8 +25,6 @@ export default {
 
   server_root_url: process.env.SERVER_ROOT_URL || '',
   web_root_url: process.env.WEB_ROOT_URL || '',
-
-  ssl: process.env.ENVIRONMENT == 'production'? process.env.SSL : false,
 
   activation_code_digit: parseInt(process.env.ACTIVATION_CODE_DIGIT) || 6,
   activation_code_expiresin: parseInt(process.env.ACTIVATION_CODE_EXPIRESIN) || 86400,

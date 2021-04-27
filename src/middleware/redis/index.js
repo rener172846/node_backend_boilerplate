@@ -8,17 +8,19 @@ import logger from '../logger';
 bluebird.promisifyAll(redis.RedisClient.prototype);
 bluebird.promisifyAll(redis.Multi.prototype);
 
-const client = redis.createClient({
-  host: config.redis_host,
-  port: config.redis_port,
-  no_ready_check: true,
-  password : config.redis_pass,
-});
-client.on('connect', () => {
-  logger.info(`Connected to redis`);
-});
-client.on('error', err => {
-  logger.info(`Error: ${err}`);
-});
+export default function createClient() {
+  const client = redis.createClient({
+    host: config.redis_host,
+    port: config.redis_port,
+    no_ready_check: true,
+    password : config.redis_pass,
+  });
+  client.on('connect', () => {
+    logger.info(`Connected to redis`);
+  });
+  client.on('error', err => {
+    logger.error(`Error: ${err}`);
+  });
 
-export default client;
+  return client;
+}

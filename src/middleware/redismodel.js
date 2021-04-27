@@ -1,7 +1,11 @@
 import crypto from 'crypto';
 import { stringify, parse } from 'json-buffer';
 
-import redisClient from './redis';
+import config from '../config';
+import redisCreateClient from './redis';
+
+
+const redisClient = config.use_redis ? redisCreateClient() : {};
 
 const selectMethods = [
   'findAll',
@@ -167,6 +171,16 @@ export default function generateRedisModel(model, options = {}) {
           redisClient.del(reply)
         });
       });
+
+      if (model.relatives) {
+        model.relatives.forEach(relative => {
+          redisClient.keys(`sequelize:${relative}:*`, function(err, replies) {
+            replies.forEach(function (reply, index) {
+              redisClient.del(reply)
+            });
+          });
+        })
+      }
 
       return result;
     };

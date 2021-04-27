@@ -1,7 +1,5 @@
 import express from 'express';
-import fs from 'fs';
 import path from "path";
-import https from 'https';
 import http from 'http';
 import bodyParser from 'body-parser';
 import cors from 'cors';
@@ -22,21 +20,8 @@ app.use(passport)
 app.use('/public', express.static(path.join(__dirname, '../public')))
 router(app)
 
-// Create the HTTPS or HTTP server, per configuration
-var server
-if (config.ssl) {
-  // Assumes certificates are in .ssl folder from package root. Make sure the files are secured.
-  server = https.createServer(
-    {
-      key: fs.readFileSync(path.join(__dirname, './ssl/server.key')),
-      ca: fs.readFileSync(path.join(__dirname, './ssl/server.ca-bundle')),
-      cert: fs.readFileSync(path.join(__dirname, './ssl/server.crt'))
-    },
-    app
-  )
-} else {
-  server = http.createServer(app)
-}
+// Create the HTTP server
+http.createServer(app)
 
 sequelize.sync({force: false}).then(() => {
   logger.info('Connected to database')

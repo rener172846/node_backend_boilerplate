@@ -30,9 +30,9 @@ const logger = createLogger ({
     new DailyRotateFile({ filename: 'logs/error.log', level: 'error' }),
     new DailyRotateFile({ filename: 'logs/info.log', level: 'info' }),
   ],
-  exceptionHandlers: [
-    new transports.File({ filename: 'logs/exceptions.log' })
-  ],
+  exceptionHandlers: process.env.NODE_ENV === 'production'
+    ? [new transports.File({ filename: 'logs/exceptions.log' })]
+    : null,
 });
 if (process.env.NODE_ENV !== 'production') {
   logger.add(new transports.Console ({
